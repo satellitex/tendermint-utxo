@@ -1,0 +1,9 @@
+syntax = "proto3";
+package utxo.utxo;
+
+option go_package = "utxo/x/utxo/types";
+
+message TxOut {
+    uint64 value = 1;
+    string pkScript = 2;
+}

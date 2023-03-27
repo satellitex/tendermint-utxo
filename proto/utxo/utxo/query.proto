@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package utxo.utxo;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "utxo/utxo/params.proto";
+import "utxo/utxo/transaction.proto";
+
+option go_package = "utxo/x/utxo/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/utxo/utxo/params";
+  
+  }
+  
+  // Queries a list of Transaction items.
+  rpc Transaction    (QueryGetTransactionRequest) returns (QueryGetTransactionResponse) {
+    option (google.api.http).get = "/utxo/utxo/transaction/{hash}";
+  
+  }
+  rpc TransactionAll (QueryAllTransactionRequest) returns (QueryAllTransactionResponse) {
+    option (google.api.http).get = "/utxo/utxo/transaction";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTransactionRequest {
+  string hash = 1;
+}
+
+message QueryGetTransactionResponse {
+  Transaction Transaction = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTransactionRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTransactionResponse {
+  repeated Transaction                            Transaction = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+

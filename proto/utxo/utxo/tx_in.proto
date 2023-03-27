@@ -1,0 +1,15 @@
+syntax = "proto3";
+package utxo.utxo;
+
+option go_package = "utxo/x/utxo/types";
+
+message Outpoint {
+    string hash = 1;
+    uint32 index = 2;
+}
+
+message TxIn {
+    Outpoint previousOutpoint = 1;
+    string signatureScript = 2;
+    uint32 sequence = 3;    
+}

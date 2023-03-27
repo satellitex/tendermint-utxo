@@ -1,0 +1,13 @@
+syntax = "proto3";
+package utxo.utxo;
+
+option go_package = "utxo/x/utxo/types";
+import "utxo/utxo/tx_in.proto"; 
+import "utxo/utxo/tx_out.proto"; 
+
+message Transaction {
+  uint64 version = 1; 
+  repeated TxIn txIn = 2;
+  repeated TxOut txOut = 3; 
+  uint64 locktime = 4; 
+}

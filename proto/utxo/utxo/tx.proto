@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package utxo.utxo;
+
+import "utxo/utxo/transaction.proto";
+import "utxo/utxo/tx_in.proto";
+import "utxo/utxo/tx_out.proto";
+
+option go_package = "utxo/x/utxo/types";
+
+service Msg {
+  rpc SendTransaction (MsgSendTransaction) returns (MsgSendTransactionResponse);
+}
+
+message MsgSendTransaction {
+  Transaction tx = 1;
+}
+
+
+message MsgSendTransactionResponse {
+  string hash = 1;
+}
