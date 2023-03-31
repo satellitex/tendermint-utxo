@@ -50,3 +50,8 @@ curl https://get.ignite.com/username/utxo@latest! | sudo bash
 - [Ignite CLI docs](https://docs.ignite.com)
 - [Cosmos SDK docs](https://docs.cosmos.network)
 - [Developer Chat](https://discord.gg/ignite)
+
+
+## TODO
+- SendTransaction の処理追加
+- Balance の残高参照処理追加
