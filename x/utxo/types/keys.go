@@ -19,6 +19,8 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	TransactionKey= "Transaction/value/"
-	TransactionCountKey= "Transaction/count/"
+	TransactionKey        = "Transaction/value/"
+	TransactionCountKey   = "Transaction/count/"
+	DeprecatedOutpointKey = "DeprecatedOutpoint/value"
+	TxOutKey              = "TxOut/value/"
 )

@@ -23,9 +23,14 @@ func (k msgServer) SendTransaction(goCtx context.Context, msg *types.MsgSendTran
 
 	var inSum uint64 = 0
 
-	// 各 Inputs について署名が正しいかを検証する
+	// Verify the signature by publicKey at secp256k1 by each input.
 	for _, elm := range transaction.TxIn {
-		// TxIn に対応する TxOut を検索する
+		// check the txOut is not spent
+		_, found := k.GetDeprecatedOutpoint(ctx, *elm.PreviousOutpoint)
+		if found {
+			return nil, fmt.Errorf("Already spent transaction output")
+		}
+		// Find txOut corresponding to txIn
 		tx, found := k.GetTransaction(ctx, []byte(elm.PreviousOutpoint.Hash))
 		if !found {
 			return nil, fmt.Errorf("Not found transaction input utxo")
@@ -33,6 +38,7 @@ func (k msgServer) SendTransaction(goCtx context.Context, msg *types.MsgSendTran
 		if len(tx.TxOut)+1 < int(elm.PreviousOutpoint.Index) {
 			return nil, fmt.Errorf("Not exist transaction output index")
 		}
+
 		txOut := tx.TxOut[elm.PreviousOutpoint.Index]
 
 		err := k.VerifyTxInput(elm, txOut)
@@ -43,7 +49,7 @@ func (k msgServer) SendTransaction(goCtx context.Context, msg *types.MsgSendTran
 		inSum += txOut.Value
 	}
 
-	// 各 Outputs の累計が inSum と等しいかを検証する
+	// Verify that the sum of each output is equal to inSum
 	var outSum uint64 = 0
 	for _, elm := range transaction.TxOut {
 		outSum += elm.Value
@@ -52,6 +58,10 @@ func (k msgServer) SendTransaction(goCtx context.Context, msg *types.MsgSendTran
 		return nil, fmt.Errorf("Invalid transaction")
 	}
 
+	// save depreacted outpoints
+	for _, elm := range transaction.TxIn {
+		k.SetDeprecatedOutpoint(ctx, *elm.PreviousOutpoint, true)
+	}
 	// save tx to store
 	k.AppendTransaction(
 		ctx,
@@ -66,6 +76,7 @@ func (k msgServer) SendTransaction(goCtx context.Context, msg *types.MsgSendTran
 
 // Verify transaction by checking the signature on bitcoin signature.
 // If the signature is valid, the transaction is added to the utxo store.
+// Note: For simplicity, `SignatureScript` is simply recognized as a signature and `PkScript` as a public key.
 func (k Keeper) VerifyTxInput(txIn *types.TxIn, txOut *types.TxOut) error {
 	// Verify the signature by publicKey at secp256k1
 	signature := txIn.SignatureScript
