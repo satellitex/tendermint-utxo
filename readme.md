@@ -53,5 +53,4 @@ curl https://get.ignite.com/username/utxo@latest! | sudo bash
 
 
 ## TODO
-- SendTransaction の処理追加
 - Balance の残高参照処理追加
