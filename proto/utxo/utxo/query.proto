@@ -6,6 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "utxo/utxo/params.proto";
+import "utxo/utxo/tx_in.proto"; 
 import "utxo/utxo/transaction.proto";
 
 option go_package = "utxo/x/utxo/types";
@@ -26,6 +27,12 @@ service Query {
   }
   rpc TransactionAll (QueryAllTransactionRequest) returns (QueryAllTransactionResponse) {
     option (google.api.http).get = "/utxo/utxo/transaction";
+  
+  }
+  
+  // Queries a list of GetBalance items.
+  rpc GetBalance (QueryGetBalanceRequest) returns (QueryGetBalanceResponse) {
+    option (google.api.http).get = "/utxo/utxo/get_balance/{pubkey}";
   
   }
 }
@@ -54,5 +61,14 @@ message QueryAllTransactionRequest {
 message QueryAllTransactionResponse {
   repeated Transaction                            Transaction = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+
+message QueryGetBalanceRequest {
+  string pubkey = 1;
+}
+
+message QueryGetBalanceResponse {
+  uint64 amount   = 1;
+  Outpoint outpoint = 2;
 }
 

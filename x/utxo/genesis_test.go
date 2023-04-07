@@ -15,15 +15,15 @@ func TestGenesis(t *testing.T) {
 		Params: types.DefaultParams(),
 
 		TransactionList: []types.Transaction{
-		{
-			Id: 0,
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
 		},
-		{
-			Id: 1,
-		},
-	},
-	TransactionCount: 2,
-	// this line is used by starport scaffolding # genesis/test/state
+		TransactionCount: 2,
+		// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.UtxoKeeper(t)
@@ -35,6 +35,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.TransactionList, got.TransactionList)
-require.Equal(t, genesisState.TransactionCount, got.TransactionCount)
-// this line is used by starport scaffolding # genesis/test/assert
+	require.Equal(t, genesisState.TransactionCount, got.TransactionCount)
+	// this line is used by starport scaffolding # genesis/test/assert
 }

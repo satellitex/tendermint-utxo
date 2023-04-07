@@ -53,4 +53,7 @@ curl https://get.ignite.com/username/utxo@latest! | sudo bash
 
 
 ## TODO
-- Balance の残高参照処理追加
+- [x] Balance の残高参照処理追加
+- [ ] Genesis の適切な作成
+- [ ] CLI の手入れ
+- [ ] 正常系ストーリー作成

@@ -14,25 +14,25 @@ import (
 	"utxo/testutil/network"
 	"utxo/testutil/nullify"
 	"utxo/x/utxo/client/cli"
-    "utxo/x/utxo/types"
+	"utxo/x/utxo/types"
 )
 
 func networkWithTransactionObjects(t *testing.T, n int) (*network.Network, []types.Transaction) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
-    require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
+	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
 		transaction := types.Transaction{
-    		Id: uint64(i),
-    	}
+			Id: uint64(i),
+		}
 		nullify.Fill(&transaction)
 		state.TransactionList = append(state.TransactionList, transaction)
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
-    cfg.GenesisState[types.ModuleName] = buf
+	cfg.GenesisState[types.ModuleName] = buf
 	return network.New(t, cfg), state.TransactionList
 }
 
@@ -78,9 +78,9 @@ func TestShowTransaction(t *testing.T) {
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 				require.NotNil(t, resp.Transaction)
 				require.Equal(t,
-                	nullify.Fill(&tc.obj),
-                	nullify.Fill(&resp.Transaction),
-                )
+					nullify.Fill(&tc.obj),
+					nullify.Fill(&resp.Transaction),
+				)
 			}
 		})
 	}
@@ -115,9 +115,9 @@ func TestListTransaction(t *testing.T) {
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.Transaction), step)
 			require.Subset(t,
-            	nullify.Fill(objs),
-            	nullify.Fill(resp.Transaction),
-            )
+				nullify.Fill(objs),
+				nullify.Fill(resp.Transaction),
+			)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -132,8 +132,8 @@ func TestListTransaction(t *testing.T) {
 			require.LessOrEqual(t, len(resp.Transaction), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-            	nullify.Fill(resp.Transaction),
-            )
+				nullify.Fill(resp.Transaction),
+			)
 			next = resp.Pagination.NextKey
 		}
 	})

@@ -20,7 +20,7 @@ func TestCreateTransaction(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-    fields := []string{ "111",  "null",  "null",  "111", }
+	fields := []string{"111", "null", "null", "111"}
 	for _, tc := range []struct {
 		desc string
 		args []string
@@ -38,9 +38,9 @@ func TestCreateTransaction(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-            args := []string{}
-            args = append(args, fields...)
-            args = append(args, tc.args...)
+			args := []string{}
+			args = append(args, fields...)
+			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateTransaction(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -60,14 +60,14 @@ func TestUpdateTransaction(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-    fields := []string{ "111",  "null",  "null",  "111", }
+	fields := []string{"111", "null", "null", "111"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
 	}
-    args := []string{}
+	args := []string{}
 	args = append(args, fields...)
 	args = append(args, common...)
 	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateTransaction(), args)
@@ -93,9 +93,9 @@ func TestUpdateTransaction(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-            args := []string{tc.id}
-            args = append(args, fields...)
-            args = append(args, tc.args...)
+			args := []string{tc.id}
+			args = append(args, fields...)
+			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdUpdateTransaction(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -115,14 +115,14 @@ func TestDeleteTransaction(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{ "111",  "null",  "null",  "111", }
+	fields := []string{"111", "null", "null", "111"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdkmath.NewInt(10))).String()),
 	}
-    args := []string{}
+	args := []string{}
 	args = append(args, fields...)
 	args = append(args, common...)
 	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateTransaction(), args)

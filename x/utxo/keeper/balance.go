@@ -9,9 +9,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// GetTxOut returns a outpoint from its pkScript
-func (k Keeper) GetTxOut(ctx sdk.Context, pkScript string) (val types.Outpoint, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TxOutKey))
+// GetOutpoint returns a outpoint from its pkScript
+func (k Keeper) GetOutpoint(ctx sdk.Context, pkScript string) (val types.Outpoint, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OutpointKey))
 	b := store.Get([]byte(pkScript))
 	if b == nil {
 		return val, false
@@ -20,22 +20,22 @@ func (k Keeper) GetTxOut(ctx sdk.Context, pkScript string) (val types.Outpoint, 
 	return val, true
 }
 
-// SetTxOut sets a specific outpoint in the store
-func (k Keeper) SetTxOut(ctx sdk.Context, pkScript string, outpoint types.Outpoint) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TxOutKey))
+// SetOutpoint sets a specific outpoint in the store
+func (k Keeper) SetOutpoint(ctx sdk.Context, pkScript string, outpoint types.Outpoint) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OutpointKey))
 	b := k.cdc.MustMarshal(&outpoint)
 	store.Set([]byte(pkScript), b)
 }
 
-// RemoveTxOut removes a outpoint from the store
-func (k Keeper) RemoveTxOut(ctx sdk.Context, pkScript string) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TxOutKey))
+// RemoveOutpoint removes a outpoint from the store
+func (k Keeper) RemoveOutpoint(ctx sdk.Context, pkScript string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OutpointKey))
 	store.Delete([]byte(pkScript))
 }
 
-// GetAllTxOut returns all outpoint
-func (k Keeper) GetAllTxOut(ctx sdk.Context) (list []types.Outpoint) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TxOutKey))
+// GetAllOutpoint returns all outpoint
+func (k Keeper) GetAllOutpoint(ctx sdk.Context) (list []types.Outpoint) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OutpointKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -49,14 +49,14 @@ func (k Keeper) GetAllTxOut(ctx sdk.Context) (list []types.Outpoint) {
 	return
 }
 
-// GetTxOutIndexBytes returns the byte representation of the index
-func GetTxOutIndexBytes(index uint32) []byte {
+// GetOutpointIndexBytes returns the byte representation of the index
+func GetOutpointIndexBytes(index uint32) []byte {
 	bz := make([]byte, 4)
 	binary.BigEndian.PutUint32(bz, index)
 	return bz
 }
 
-// GetTxOutIndexFromBytes returns index in uint32 format from a byte array
-func GetTxOutIndexFromBytes(bz []byte) uint32 {
+// GetOutpointIndexFromBytes returns index in uint32 format from a byte array
+func GetOutpointIndexFromBytes(bz []byte) uint32 {
 	return binary.BigEndian.Uint32(bz)
 }

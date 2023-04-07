@@ -43864,6 +43864,52 @@ paths:
                         }
       tags:
         - Query
+  /utxo/utxo/get_balance/{pubkey}:
+    get:
+      summary: Queries a list of GetBalance items.
+      operationId: UtxoUtxoGetBalance
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              amount:
+                type: string
+                format: uint64
+              outpoint:
+                type: object
+                properties:
+                  hash:
+                    type: string
+                  index:
+                    type: integer
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /utxo/utxo/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -71743,6 +71789,20 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  utxo.utxo.QueryGetBalanceResponse:
+    type: object
+    properties:
+      amount:
+        type: string
+        format: uint64
+      outpoint:
+        type: object
+        properties:
+          hash:
+            type: string
+          index:
+            type: integer
+            format: int64
   utxo.utxo.QueryGetTransactionResponse:
     type: object
     properties:

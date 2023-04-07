@@ -22,5 +22,5 @@ const (
 	TransactionKey        = "Transaction/value/"
 	TransactionCountKey   = "Transaction/count/"
 	DeprecatedOutpointKey = "DeprecatedOutpoint/value"
-	TxOutKey              = "TxOut/value/"
+	OutpointKey           = "OutpointKey/value/"
 )

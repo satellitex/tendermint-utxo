@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"utxo/x/utxo/types"
-	"utxo/testutil/nullify"
 	keepertest "utxo/testutil/keeper"
+	"utxo/testutil/nullify"
+	"utxo/x/utxo/types"
 )
 
 func TestTransactionQuerySingle(t *testing.T) {
@@ -50,7 +50,7 @@ func TestTransactionQuerySingle(t *testing.T) {
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
-			    require.NoError(t, err)
+				require.NoError(t, err)
 				require.Equal(t,
 					nullify.Fill(tc.response),
 					nullify.Fill(response),
@@ -83,8 +83,8 @@ func TestTransactionQueryPaginated(t *testing.T) {
 			require.LessOrEqual(t, len(resp.Transaction), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-            	nullify.Fill(resp.Transaction),
-            )
+				nullify.Fill(resp.Transaction),
+			)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -96,8 +96,8 @@ func TestTransactionQueryPaginated(t *testing.T) {
 			require.LessOrEqual(t, len(resp.Transaction), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-            	nullify.Fill(resp.Transaction),
-            )
+				nullify.Fill(resp.Transaction),
+			)
 			next = resp.Pagination.NextKey
 		}
 	})
