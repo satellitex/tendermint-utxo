@@ -19,3 +19,22 @@ faucet:
 validators:
 - name: alice
   bonded: 100000000stake
+genesis:
+  app_state:
+    utxo:
+      transactionList:
+        - version: 1
+          txIn: []
+          txOut:
+            - value: 10000
+              pkScript: address1
+            - value: 10000
+              pkScript: address2
+            - value: 10000
+              pkScript: address3
+            - value: 10000
+              pkScript: address4
+            - value: 10000
+              pkScript: address5
+          locktime: 0
+      transactionCount: 2
