@@ -27,14 +27,14 @@ genesis:
           txIn: []
           txOut:
             - value: 10000
-              pkScript: address1
+              pkScript: 618741408250DF80E5BC33999AE29A7E09FEBBD4
             - value: 10000
-              pkScript: address2
+              pkScript: D864BB8367F7963FE9BA6BC452533C15F1F415FE
             - value: 10000
-              pkScript: address3
+              pkScript: CC14092F505D1284C8EF287FC97E3E0572591B2D
             - value: 10000
-              pkScript: address4
+              pkScript: DE1C8C1362C55E076CBEC3855BDC47D8A95CFEC8
             - value: 10000
-              pkScript: address5
+              pkScript: 2E5E6C36ABDBD3379001E346A834EE56E9E3CD37
           locktime: 0
       transactionCount: 2

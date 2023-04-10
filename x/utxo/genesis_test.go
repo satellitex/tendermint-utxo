@@ -9,39 +9,46 @@ import (
 	"utxo/x/utxo/types"
 
 	"github.com/stretchr/testify/require"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
+
+func initKeys(num int) (pubKeys []string, privKeys []secp256k1.PrivKey) {
+	for i := 0; i < num; i++ {
+		privKey := secp256k1.GenPrivKey()
+		privKeys = append(privKeys, privKey)
+		pubKeys = append(pubKeys, privKey.PubKey().Address().String())
+	}
+	return
+}
 
 func TestGenesis(t *testing.T) {
 	// Test addresses
-	addresses := []string{
-		"address1",
-		"address2",
-		"address3",
-		"address4",
-		"address5",
-	}
-
-	// Create initial UTXOs
-	var utxoList []*types.TxOut
-	for _, addr := range addresses {
-		utxoList = append(utxoList, &types.TxOut{
-			PkScript: addr,
-			Value:    10000,
-		})
-	}
-
-	// Create initial transaction with all UTXOs in a single txOut
-	transaction := types.Transaction{
-		Version:  1,
-		TxOut:    utxoList,
-		Locktime: 0,
-	}
+	pubKeys, privKeys := initKeys(5)
 
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		TransactionList:  []types.Transaction{transaction},
+		TransactionList: []types.Transaction{
+			{
+				Version: 1,
+				TxIn:    []*types.TxIn{},
+				TxOut: []*types.TxOut{
+					{Value: 10000, PkScript: pubKeys[0]},
+					{Value: 10000, PkScript: pubKeys[1]},
+					{Value: 10000, PkScript: pubKeys[2]},
+					{Value: 10000, PkScript: pubKeys[3]},
+					{Value: 10000, PkScript: pubKeys[4]},
+				},
+				Locktime: 0,
+			},
+		},
 		TransactionCount: 1,
+	}
+
+	t.Log("Generated private keys:")
+	for i, privKey := range privKeys {
+		t.Logf("Keys #%d: (%s, %s, %x)\n", i+1,
+			genesisState.TransactionList[0].TxOut[i].PkScript, pubKeys[i], privKey.Bytes())
 	}
 
 	k, ctx := keepertest.UtxoKeeper(t)
